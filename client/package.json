@@ -1,0 +1,19 @@
+{
+  "name": "template-discord-colyseus-phaser",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.8",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@discord/embedded-app-sdk": "^1.0.1",
+    "colyseus.js": "^0.15.18",
+    "phaser": "^3.80.1"
+  }
+}
