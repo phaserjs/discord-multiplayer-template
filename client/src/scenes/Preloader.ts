@@ -23,10 +23,8 @@ export class Preloader extends Scene
 
         //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress) => {
-
             //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
             bar.width = 4 + (460 * progress);
-
         });
     }
 
@@ -34,6 +32,13 @@ export class Preloader extends Scene
     {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
+
+        // Load the alphabet images
+        const alphabetArray = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+        alphabetArray.forEach((letter) => {
+            this.load.image(letter, `${letter}.png`);
+        });
 
         this.load.image('logo', 'logo.png');
     }
