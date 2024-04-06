@@ -19,26 +19,33 @@ export class Game extends Scene
 
     async create ()
     {
+        this.cameras.main.setBackgroundColor(0x00ff00);
+        this.addBg();
+
         await this.connect();
 
-        this.cameras.main.setBackgroundColor(0x00ff00);
+        this.room.state.players.onAdd((player: any, sessionId: any) => {
+            console.log(`player joined: ${sessionId}`);
 
-        const bg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'background');
-        let scaleX = this.cameras.main.width / bg.width + 0.2;
-        let scaleY = this.cameras.main.height / bg.height + 0.2;
-        let scale = Math.max(scaleX, scaleY);
-        bg.setScale(scale).setScrollFactor(0);
+           /*  player.listen("position", (position) => {
+                console.log("position updated:", position);
+            }); */
+        });
 
-        this.add.text(Number(this.game.config.width) * 0.5, Number(this.game.config.height) * 0.5, 'Make something fun!\nand share it with us:\nsupport@phaser.io', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5);
+        this.room.state.players.onRemove((player: any, sessionId: any) => {
+            console.log(`player left: ${sessionId}`);
+        });
 
-        this.input.once('pointerdown', () => {
+        const letter = this.add.image(Number(this.game.config.width) * 0.5, 300, 'a').setInteractive();
+        letter.name = 'a';
 
-            this.scene.start('GameOver');
-
+        this.input.setDraggable(letter);
+        letter.on("drag", (pointer: object, dragX: number, dragY: number) => {
+            letter.x = Phaser.Math.Clamp(dragX, (letter.displayWidth / 2), Number(this.game.config.width) - (letter.displayWidth / 2));
+            letter.y = Phaser.Math.Clamp(dragY,  (letter.displayHeight / 2), Number(this.game.config.height) - (letter.displayHeight / 2));
+        
+            // Send position update to the server
+            this.room.send("move", {imageId: letter.name, x: letter.x, y: letter.y});
         });
     }
 
@@ -46,11 +53,19 @@ export class Game extends Scene
         const client = new Client("ws://localhost:3001");
 
         try {
-            this.room = await client.joinOrCreate("game_room", {});
+            this.room = await client.joinOrCreate("game");
 
-            console.log("successfully connected");
+            console.log("Successfully connected!");
         } catch (e) {
-            console.log("Could not connect with the server.");
+            console.log(`Could not connect with the server: ${e}`);
         }
+    }
+
+    addBg() {
+        const bg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'background');
+        let scaleX = this.cameras.main.width / bg.width + 0.2;
+        let scaleY = this.cameras.main.height / bg.height + 0.2;
+        let scale = Math.max(scaleX, scaleY);
+        bg.setScale(scale).setScrollFactor(0);
     }
 }

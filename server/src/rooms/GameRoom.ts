@@ -1,12 +1,32 @@
-// MyRoomState.ts
-import { MapSchema, Schema, type } from "@colyseus/schema";
+import { Client, Room } from "colyseus";
+import { GameState, Letters } from "../entities/GameState";
 
-export class Player extends Schema {
-    @type("number") x: number = 0;
-    @type("number") y: number = 0;
-    @type("number") z: number = 0;
-}
+export class GameRoom extends Room <GameState> {
+    maxClients = 25; // Current Discord limit is 25
 
-export class MyRoomState extends Schema {
-    @type({ map: Player }) players = new MapSchema<Player>();
+    onCreate(options: any): void | Promise<any> {
+        this.setState(new GameState());
+
+        this.onMessage("move", (client, message) => {
+
+            // Update image position based on data received
+            // For simplicity, data contains {imageId, x, y} 
+            const image = this.state.letters.get(client.imageId); // client.sessionId
+            if (image) {
+                image.x = message.x;
+                image.y = message.y;
+                this.broadcast("update", this.state.letters);
+            }
+
+        });
+    }
+
+    onJoin(client: Client, options?: any, auth?: any): void | Promise<any> {
+
+        const letter = new Letters();
+        letter.x = Math.random() * 400;
+        letter.y = Math.random() * 400;
+
+        this.state.letters.set(client.sessionId, letter);
+    }
 }

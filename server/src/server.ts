@@ -7,7 +7,7 @@ import {createServer} from 'http';
 import {WebSocketTransport} from '@colyseus/ws-transport';
 import path from 'path';
 
-import {StateHandlerRoom} from './rooms/StateHandlerRoom';
+import { GameRoom } from './rooms/GameRoom';
 
 dotenv.config({path: '../../.env'});
 
@@ -23,7 +23,7 @@ const server = new Server({
 
 // Game Rooms
 server
-  .define('game', StateHandlerRoom)
+  .define('game', GameRoom)
   // filterBy allows us to call joinOrCreate and then hold one game per channel
   // https://discuss.colyseus.io/topic/345/is-it-possible-to-run-joinorcreatebyid/3
   .filterBy(['channelId']);
