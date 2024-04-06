@@ -16,10 +16,10 @@ export class Preloader extends Scene
         bg.setScale(scale).setScrollFactor(0);
 
         //  A simple progress bar. This is the outline of the bar.
-        this.add.rectangle(this.game.config.width * 0.5, this.game.config.height * 0.5, 468, 32).setStrokeStyle(1, 0xffffff);
+        this.add.rectangle(Number(this.game.config.width) * 0.5, Number(this.game.config.height) * 0.5, 468, 32).setStrokeStyle(1, 0xffffff);
 
         //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle((this.game.config.width * 0.5)-230, this.game.config.height * 0.5, 4, 28, 0xffffff);
+        const bar = this.add.rectangle((Number(this.game.config.width) * 0.5)-230, Number(this.game.config.height) * 0.5, 4, 28, 0xffffff);
 
         //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress) => {
