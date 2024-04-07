@@ -18,48 +18,44 @@ export class Game extends Scene {
   }
 
   async create() {
-    this.cameras.main.setBackgroundColor(0x00ff00);
-    this.addBg();
+    this.cameras.main.setBackgroundColor(0x514f5a);
 
     await this.connect();
 
-    this.room.state.players.onAdd((player: any, sessionId: any) => {
-      console.log(`player joined: ${sessionId}`);
+    console.log(this.room.state.letters);
 
-      /*  player.listen("position", (position) => {
-                console.log("position updated:", position);
-            }); */
-    });
+    this.room.state.letters.onAdd((letter: any, letterId: string) => {
+      const image = this.add
+        .image(letter.x, letter.y, letterId)
+        .setInteractive();
+      image.name = letterId;
 
-    this.room.state.players.onRemove((player: any, sessionId: any) => {
-      console.log(`player left: ${sessionId}`);
-    });
+      this.input.setDraggable(image);
 
-    const letter = this.add
-      .image(Number(this.game.config.width) * 0.5, 300, "a")
-      .setInteractive();
-    letter.name = "a";
+      image.on("drag", (pointer, dragX, dragY) => {
+        image.x = Phaser.Math.Clamp(
+          dragX,
+          image.displayWidth / 2,
+          Number(this.game.config.width) - image.displayWidth / 2
+        );
+        image.y = Phaser.Math.Clamp(
+          dragY,
+          image.displayHeight / 2,
+          Number(this.game.config.height) - image.displayHeight / 2
+        );
 
-    this.input.setDraggable(letter);
-    letter.on("drag", (pointer: object, dragX: number, dragY: number) => {
-      letter.x = Phaser.Math.Clamp(
-        dragX,
-        letter.displayWidth / 2,
-        Number(this.game.config.width) - letter.displayWidth / 2
-      );
-      letter.y = Phaser.Math.Clamp(
-        dragY,
-        letter.displayHeight / 2,
-        Number(this.game.config.height) - letter.displayHeight / 2
-      );
-
-      // Send position update to the server
-      this.room.send("move", {
-        imageId: letter.name,
-        x: letter.x,
-        y: letter.y,
+        // Send position update to the server
+        this.room.send("move", { imageId: letterId, x: image.x, y: image.y });
       });
     });
+
+    /* this.room.state.letters.onChange = (letter, letterId) => {
+      const image = this.children.getByName(letterId) as Phaser.GameObjects.Image;
+      if (image) {
+        image.x = letter.x;
+        image.y = letter.y;
+      }
+    }; */
   }
 
   async connect() {
@@ -72,17 +68,5 @@ export class Game extends Scene {
     } catch (e) {
       console.log(`Could not connect with the server: ${e}`);
     }
-  }
-
-  addBg() {
-    const bg = this.add.image(
-      this.cameras.main.width / 2,
-      this.cameras.main.height / 2,
-      "background"
-    );
-    let scaleX = this.cameras.main.width / bg.width + 0.2;
-    let scaleY = this.cameras.main.height / bg.height + 0.2;
-    let scale = Math.max(scaleX, scaleY);
-    bg.setScale(scale).setScrollFactor(0);
   }
 }

@@ -1,4 +1,4 @@
-import { Client, Room } from "colyseus";
+import { Client, ClientArray, Room } from "colyseus";
 import { GameState, Letters } from "../schemas/GameState";
 
 export class GameRoom extends Room<GameState> {
@@ -7,23 +7,33 @@ export class GameRoom extends Room<GameState> {
   onCreate(options: any): void | Promise<any> {
     this.setState(new GameState());
 
+    const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    alphabet.split("").forEach((letter, index) => {
+      const letterObject = new Letters();
+      letterObject.x = Math.random() * 400;
+      letterObject.y = Math.random() * 400;
+      letterObject.imageId = letter;
+
+      this.state.letters.set(letter, letterObject);
+    });
+
     this.onMessage("move", (client, message) => {
       // Update image position based on data received
       // For simplicity, data contains {imageId, x, y}
-      const image = this.state.letters.get(client.imageId); // client.sessionId
+      const image = this.state.letters.get(message.imageId); // client.sessionId
       if (image) {
         image.x = message.x;
         image.y = message.y;
-        this.broadcast("update", this.state.letters);
+        this.broadcast("move", this.state.letters);
       }
     });
   }
 
   onJoin(client: Client, options?: any, auth?: any): void | Promise<any> {
-    const letter = new Letters();
-    letter.x = Math.random() * 400;
-    letter.y = Math.random() * 400;
+    console.log(`Client joined: ${client.sessionId}`);
+  }
 
-    this.state.letters.set(client.sessionId, letter);
+  onLeave(client: Client, consented: boolean): void | Promise<any> {
+    console.log(`Client left: ${client.sessionId}`);
   }
 }
