@@ -1,4 +1,4 @@
-import { Client, ClientArray, Room } from "colyseus";
+import { Client, Room } from "colyseus";
 import { GameState, Letters } from "../schemas/GameState";
 
 export class GameRoom extends Room<GameState> {
@@ -10,8 +10,17 @@ export class GameRoom extends Room<GameState> {
     const alphabet = "abcdefghijklmnopqrstuvwxyz";
     alphabet.split("").forEach((letter, index) => {
       const letterObject = new Letters();
-      letterObject.x = Math.random() * 400;
-      letterObject.y = Math.random() * 400;
+
+      const offset = 100;
+      const minWidth = offset;
+      const maxWidth = options.screenWidth - offset;
+      const minHeight = offset;
+      const maxHeight = options.screenHeight - offset;
+
+      letterObject.x =
+        Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
+      letterObject.y =
+        Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
       letterObject.imageId = letter;
 
       this.state.letters.set(letter, letterObject);
@@ -19,8 +28,7 @@ export class GameRoom extends Room<GameState> {
 
     this.onMessage("move", (client, message) => {
       // Update image position based on data received
-      // For simplicity, data contains {imageId, x, y}
-      const image = this.state.letters.get(message.imageId); // client.sessionId
+      const image = this.state.letters.get(message.imageId);
       if (image) {
         image.x = message.x;
         image.y = message.y;

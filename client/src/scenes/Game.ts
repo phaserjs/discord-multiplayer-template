@@ -22,8 +22,6 @@ export class Game extends Scene {
 
     await this.connect();
 
-    console.log(this.room.state.letters);
-
     this.room.state.letters.onAdd((letter: any, letterId: string) => {
       const image = this.add
         .image(letter.x, letter.y, letterId)
@@ -33,6 +31,11 @@ export class Game extends Scene {
       this.input.setDraggable(image);
 
       image.on("drag", (pointer, dragX, dragY) => {
+        if (!this.room) {
+          return;
+        }
+
+        // Clamp drag position to screen bounds
         image.x = Phaser.Math.Clamp(
           dragX,
           image.displayWidth / 2,
@@ -47,22 +50,27 @@ export class Game extends Scene {
         // Send position update to the server
         this.room.send("move", { imageId: letterId, x: image.x, y: image.y });
       });
-    });
 
-    /* this.room.state.letters.onChange = (letter, letterId) => {
-      const image = this.children.getByName(letterId) as Phaser.GameObjects.Image;
-      if (image) {
+      letter.onChange(() => {
         image.x = letter.x;
         image.y = letter.y;
-      }
-    }; */
+      });
+    });
   }
 
   async connect() {
     const client = new Client("ws://localhost:3001");
 
     try {
-      this.room = await client.joinOrCreate("game");
+      this.room = await client.joinOrCreate("game", {
+        // Let's send our client screen dimensions to the server for initial positioning
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+      });
+
+      this.room.onMessage("move", (message) => {
+        //console.log("Move message received:", message);
+      });
 
       console.log("Successfully connected!");
     } catch (e) {
