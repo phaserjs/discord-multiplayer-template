@@ -1,0 +1,13 @@
+{
+  "name": "template-discord-colyseus-phaser",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A starter project using Phaser 3, Colyseus, and Discord SDK",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm run --filter \"./packages/**\" --parallel dev",
+    "tunnel": "cloudflared tunnel --url http://localhost:3001"
+  },
+  "author": "",
+  "license": "ISC"
+}

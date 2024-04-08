@@ -3,6 +3,15 @@ import {defineConfig} from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
   envDir: '../',
+  build: {
+    rollupOptions: {
+        output: {
+            manualChunks: {
+                phaser: ['phaser']
+            }
+        }
+    },
+  },
   server: {
     proxy: {
       '/api': {
@@ -13,7 +22,7 @@ export default defineConfig({
       },
     },
     hmr: {
-      clientPort: 5173, //443
+      clientPort: 5173, // for development: 5173, for production: 443
     },
   },
 });
