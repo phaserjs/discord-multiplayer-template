@@ -1,15 +1,6 @@
 import { Scene } from "phaser";
 import { Room, Client } from "colyseus.js";
 
-export const BACKEND_URL =
-  window.location.href.indexOf("localhost") === -1
-    ? `${window.location.protocol.replace("http", "ws")}//${
-        window.location.hostname
-      }${window.location.port && `:${window.location.port}`}`
-    : "ws://localhost:2567";
-
-export const BACKEND_HTTP_URL = BACKEND_URL.replace("ws", "http");
-
 export class Game extends Scene {
   room: Room;
 
@@ -59,7 +50,11 @@ export class Game extends Scene {
   }
 
   async connect() {
-    const client = new Client("ws://localhost:3001");
+    const url =
+      import.meta.env.MODE === "development"
+        ? "ws://localhost:3001"
+        : `wss://${location.host}:3001/api/colyseus`;
+    const client = new Client(url);
 
     try {
       this.room = await client.joinOrCreate("game", {
