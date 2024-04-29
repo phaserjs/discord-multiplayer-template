@@ -9,5 +9,8 @@
     "tunnel": "cloudflared tunnel --url http://localhost:3001"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.7"
+  }
 }
