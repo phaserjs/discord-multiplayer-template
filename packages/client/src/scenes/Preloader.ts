@@ -47,12 +47,16 @@ export class Preloader extends Scene {
     this.load.setPath("assets");
 
     // Load the alphabet images
-    const alphabetArray = "abcdefghijklmnopqrstuvwxyz".split("");
+    const alphabetArray = "abcde".split(""); // fghijklmnopqrstuvwxyz
 
     alphabetArray.forEach((letter) => {
       this.load.image(letter, `${letter}.png`);
     });
 
+    this.load.image("smile.png");
+    this.load.image("alien.png");
+    this.load.image("cube.png");
+    this.load.image("retro.png");
     this.load.image("logo", "logo.png");
   }
 
