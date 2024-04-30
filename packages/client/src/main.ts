@@ -2,9 +2,9 @@ import { DiscordSDK } from "@discord/embedded-app-sdk";
 
 import { Boot } from "./scenes/Boot";
 import { Game } from "./scenes/Game";
-import { GameOver } from "./scenes/GameOver";
 import { MainMenu } from "./scenes/MainMenu";
 import { Preloader } from "./scenes/Preloader";
+import { Background } from "./scenes/Background";
 
 // Instantiate the SDK
 // Uncomment this once your work is done on browser, it will ONLY work on Discord Activities
@@ -32,7 +32,7 @@ const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [Boot, Preloader, MainMenu, Game, GameOver],
+  scene: [Boot, Preloader, MainMenu, Game, Background],
 };
 
 new Phaser.Game(config);
