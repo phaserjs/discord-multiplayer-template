@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { Room, Client } from "colyseus.js";
+import { Background } from "./Background";
 
 export class Game extends Scene {
   room: Room;
@@ -9,7 +10,9 @@ export class Game extends Scene {
   }
 
   async create() {
-    this.cameras.main.setBackgroundColor(0x514f5a);
+    this.scene.launch("background");
+
+    this.cameras.main.setBackgroundColor(0xdff9fb);
 
     await this.connect();
 
@@ -17,6 +20,7 @@ export class Game extends Scene {
       const image = this.add
         .image(letter.x, letter.y, letterId)
         .setInteractive();
+      image.setScale(0.7);
       image.name = letterId;
 
       this.input.setDraggable(image);
