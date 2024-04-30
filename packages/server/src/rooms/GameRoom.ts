@@ -7,7 +7,7 @@ export class GameRoom extends Room<GameState> {
   onCreate(options: any): void | Promise<any> {
     this.setState(new GameState());
 
-    const alphabet = "abcdefghijklmnopqrstuvwxyz";
+    const alphabet = "abcde"; // fghijklmnopqrstuvwxyz
     alphabet.split("").forEach((letter, index) => {
       const letterObject = new Letters();
 
