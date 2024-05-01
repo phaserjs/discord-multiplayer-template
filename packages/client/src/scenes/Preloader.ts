@@ -56,8 +56,12 @@ export class Preloader extends Scene {
     this.load.image("smile", "smile.png");
     this.load.image("alien", "alien.png");
     this.load.image("logo", "logo.png");
-    this.load.image("nought", "nought.png");
-    this.load.image("cross", "cross.png");
+    this.load.image("nought_1", "nought.png");
+    this.load.image("nought_2", "nought.png");
+    this.load.image("nought_3", "nought.png");
+    this.load.image("cross_1", "cross.png");
+    this.load.image("cross_2", "cross.png");
+    this.load.image("cross_3", "cross.png");
     this.load.image("grid", "grid.png");
   }
 
