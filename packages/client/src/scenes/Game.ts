@@ -13,17 +13,14 @@ export class Game extends Scene {
 
     const grid = this.add.image(
       window.innerWidth / 2,
-      window.innerHeight * 0.75,
+      window.innerHeight * 0.35,
       "grid"
     );
-    grid.setScale(0.5);
+    grid.setScale(0.6);
 
     await this.connect();
 
-    let c = 0;
     this.room.state.draggables.onAdd((draggable: any, draggableId: string) => {
-      c++;
-      console.log(c);
       const image = this.add
         .image(draggable.x, draggable.y, draggableId)
         .setInteractive();
@@ -31,7 +28,6 @@ export class Game extends Scene {
       image.name = draggableId;
 
       this.input.setDraggable(image);
-
       image.on("drag", (pointer, dragX, dragY) => {
         if (!this.room) {
           return;
