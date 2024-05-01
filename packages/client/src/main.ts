@@ -20,19 +20,19 @@ async function setupDiscordSdk() {
   await discordSdk.ready();
 } */
 
-//  Find out more information about the Game Config at:
-//  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
-const config = {
-  type: Phaser.AUTO,
-  width: window.innerWidth,
-  height: window.innerHeight,
-  parent: "game-container",
-  backgroundColor: "#028af8",
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-  },
-  scene: [Boot, Preloader, MainMenu, Game, Background],
-};
+(async () => {
+  const config = {
+    type: Phaser.AUTO,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    parent: "game-container",
+    backgroundColor: "#028af8",
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
+    scene: [Boot, Preloader, MainMenu, Game, Background],
+  };
 
-new Phaser.Game(config);
+  new Phaser.Game(config);
+})();
