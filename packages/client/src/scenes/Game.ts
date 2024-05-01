@@ -1,6 +1,5 @@
 import { Scene } from "phaser";
 import { Room, Client } from "colyseus.js";
-import { Background } from "./Background";
 
 export class Game extends Scene {
   room: Room;
@@ -12,16 +11,24 @@ export class Game extends Scene {
   async create() {
     this.scene.launch("background");
 
-    this.cameras.main.setBackgroundColor(0xdff9fb);
+    const grid = this.add.image(
+      window.innerWidth / 2,
+      window.innerHeight * 0.75,
+      "grid"
+    );
+    grid.setScale(0.5);
 
     await this.connect();
 
-    this.room.state.letters.onAdd((letter: any, letterId: string) => {
+    let c = 0;
+    this.room.state.draggables.onAdd((draggable: any, draggableId: string) => {
+      c++;
+      console.log(c);
       const image = this.add
-        .image(letter.x, letter.y, letterId)
+        .image(draggable.x, draggable.y, draggableId)
         .setInteractive();
-      image.setScale(0.7);
-      image.name = letterId;
+      image.setScale(0.75);
+      image.name = draggableId;
 
       this.input.setDraggable(image);
 
@@ -43,12 +50,16 @@ export class Game extends Scene {
         );
 
         // Send position update to the server
-        this.room.send("move", { imageId: letterId, x: image.x, y: image.y });
+        this.room.send("move", {
+          imageId: draggableId,
+          x: image.x,
+          y: image.y,
+        });
       });
 
-      letter.onChange(() => {
-        image.x = letter.x;
-        image.y = letter.y;
+      draggable.onChange(() => {
+        image.x = draggable.x;
+        image.y = draggable.y;
       });
     });
   }
