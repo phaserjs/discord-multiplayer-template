@@ -1,6 +1,9 @@
 import { Scene } from "phaser";
+import AlignGrid from "../utils/alignGrid";
+import Align from "../utils/align";
 
 export class Background extends Scene {
+  aGrid: AlignGrid;
   constructor() {
     super("background");
   }
@@ -14,9 +17,9 @@ export class Background extends Scene {
       this.cameras.main.height / 2,
       "fridge_bg"
     );
-    let scaleX = this.cameras.main.width / fridge_bg.width - 0.2;
-    let scaleY = this.cameras.main.height / fridge_bg.height - 0.2;
-    let scale = Math.max(scaleX, scaleY);
-    fridge_bg.setScale(scale).setScrollFactor(0);
+
+    this.aGrid = new AlignGrid({ scene: this, rows: 11, cols: 11 });
+    this.aGrid.placeAtIndex(60, fridge_bg);
+    Align.scaleToGameW(fridge_bg, 0.75);
   }
 }

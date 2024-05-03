@@ -25,7 +25,7 @@ export default ({ mode }) => {
         },
       },
       hmr: {
-        clientPort: 3000, // for dev: 3000, for production: 443
+        clientPort: 443, // for dev: 3000, for production: 443
       },
     },
   });
