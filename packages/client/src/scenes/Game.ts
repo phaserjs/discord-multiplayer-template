@@ -1,11 +1,8 @@
 import { Scene } from "phaser";
 import { Room, Client } from "colyseus.js";
-import AlignGrid from "../utils/alignGrid";
-import Align from "../utils/align";
 
 export class Game extends Scene {
   room: Room;
-  aGrid: AlignGrid;
 
   constructor() {
     super("Game");
@@ -64,10 +61,12 @@ export class Game extends Scene {
   }
 
   async connect() {
-    // For development on local: `ws://localhost:3001`
-    // wss://${location.host}:3001/api/colyseus
-    console.log(location.host);
-    const client = new Client(`ws://localhost:3001`);
+    const url =
+      location.host === "localhost:3000"
+        ? `ws://localhost:3001`
+        : `wss://${location.host}:3001/api/colyseus`;
+
+    const client = new Client(`${url}`);
 
     try {
       this.room = await client.joinOrCreate("game", {
