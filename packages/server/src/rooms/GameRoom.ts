@@ -24,11 +24,11 @@ export class GameRoom extends Room<GameState> {
     draggableList.forEach((draggable, index) => {
       const draggableObject = new Draggables();
 
-      const offset = 300;
+      const offset = 500;
       const minWidth = offset;
-      const maxWidth = options.screenWidth - offset;
+      const maxWidth = options.screenWidth / 2 + 250;
       const minHeight = offset;
-      const maxHeight = options.screenHeight - offset;
+      const maxHeight = options.screenHeight / 2;
 
       draggableObject.x =
         Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
