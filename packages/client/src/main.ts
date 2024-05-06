@@ -1,5 +1,7 @@
 import { DiscordSDK } from "@discord/embedded-app-sdk";
 
+import { ScaleFlow } from "./utils/ScaleFlow";
+
 import { Boot } from "./scenes/Boot";
 import { Game } from "./scenes/Game";
 import { MainMenu } from "./scenes/MainMenu";
@@ -21,18 +23,14 @@ async function setupDiscordSdk() {
 } */
 
 (async () => {
-  const config = {
+  new ScaleFlow({
     type: Phaser.AUTO,
-    width: window.innerWidth,
-    height: window.innerHeight,
-    parent: "game-container",
-    backgroundColor: "#028af8",
-    scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
-    },
+    parent: "gameParent",
+    width: 1280, // this must be a pixel value
+    height: 720, // this must be a pixel value
+    backgroundColor: "#000000",
+    roundPixels: false,
+    pixelArt: false,
     scene: [Boot, Preloader, MainMenu, Game, Background],
-  };
-
-  new Phaser.Game(config);
+  });
 })();
