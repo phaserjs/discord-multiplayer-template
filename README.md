@@ -57,6 +57,14 @@ It will run both client and server through `http://localhost:3000`, and our API 
 
 ### Testing The Project
 
+Firstly, we need to change `NODE_ENV` environment variable to `production` in the `.env` file.
+
+```sh
+NODE_ENV='production'
+```
+
+Now, let's change our client port from `3000` to `443`, in the `packages/client/vite.config.ts`.
+
 To test our game on Discord Activity, we need to setup a public proxy for that. For this tutorial we will be using `cloudflared`. Our command is also ready for this. Don't forget that you need to `npm run dev` first as described above, then run this command:
 
 ```sh
@@ -70,14 +78,17 @@ Copy that generated public URL to **Discord App -> URL Mappings** and add it for
 
 And voila! Ready to test our activity!
 
+![game](ss/dragging.png)
+
 ## Template Project Structure
 
 We have provided a default project structure to get you started. This is as follows:
 
 - `packages/client` - Contains the game & Discord SDK source code.
-- `packages/client/main.ts` - The main entry point for the client. This contains the game & Discord SDK configuration which starts the game.
-- `packages/client/scenes/` - The Phaser Scenes are in this folder.
+- `packages/client/src/main.ts` - The main entry point for the client. This contains the game & Discord SDK configuration which starts the game.
+- `packages/client/src/scenes/` - The Phaser Scenes are in this folder.
 - `packages/client/public/assets/` - Contains game assets(sprites, sounds, spritesheets, etc).
+- `packages/client/src/utils` - Contains custom code for responsivity of the game.
 - `packages/server/server.ts` - Contains Discord SDK for OAuth2 & initiates WebSocket server for Colyseus.
 - `packages/server/rooms/GameRoom.ts` - Contains game session, channels communication between client/server.
 - `packages/server/schemas/GameState.ts` - Defines the structure and types of data that can be synchronized between the server and client.
