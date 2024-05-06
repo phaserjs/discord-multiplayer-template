@@ -8,14 +8,40 @@
 
     <style>
       html, body {
-        padding: 0;
-        margin: 0;
-        border:0;
+          width: 100vw;
+          height: 100vh;
+          margin: 0;
+          padding: 0;
+          background-color: black;
       }
-    </style>
+
+      #gameParent {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          position: relative;
+      }
+
+      #guide {
+          position: absolute;
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: scale-down;
+          pointer-events: none;
+      }
+
+      canvas {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+      }
+  </style>
   </head>
   <body>
-    <div id="game-container"></div>
+    <div id="gameParent"><img id="guide" src="assets/1280x720-trans.png"></div>
     <script type="module" src="src/main.ts"></script>
   </body>
 </html>
