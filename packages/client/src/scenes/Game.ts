@@ -12,23 +12,14 @@ export class Game extends Scene {
   }
 
   async create() {
-    this.aGrid = new AlignGrid({ scene: this, rows: 11, cols: 11 });
-    //this.aGrid.showNumbers();
-
     this.scene.launch("background");
 
-    console.log(
-      `${this.game.config.width} x ${this.game.config.height} - ${window.innerWidth} x ${window.innerHeight}`
-    );
-
     const grid = this.add.image(
-      window.innerWidth / 2,
-      window.innerHeight * 0.35,
+      this.cameras.main.width * 0.5,
+      this.cameras.main.height * 0.4,
       "grid"
     );
-
-    this.aGrid.placeAtIndex(49, grid);
-    Align.scaleToGameW(grid, 0.4);
+    grid.setScale(0.6);
 
     await this.connect();
 
@@ -37,8 +28,7 @@ export class Game extends Scene {
         .image(draggable.x, draggable.y, draggableId)
         .setInteractive();
       image.name = draggableId;
-      this.aGrid.placeAtIndex(draggable.index, image);
-      Align.scaleToGameW(image, 0.08);
+      image.setScale(0.8);
 
       this.input.setDraggable(image);
       image.on("drag", (pointer, dragX, dragY) => {
@@ -74,13 +64,16 @@ export class Game extends Scene {
   }
 
   async connect() {
-    const client = new Client(`wss://${location.host}:3001/api/colyseus`);
+    // For development on local: `ws://localhost:3001`
+    // wss://${location.host}:3001/api/colyseus
+    console.log(location.host);
+    const client = new Client(`ws://localhost:3001`);
 
     try {
       this.room = await client.joinOrCreate("game", {
         // Let's send our client screen dimensions to the server for initial positioning
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
+        screenWidth: this.game.config.width,
+        screenHeight: this.game.config.height,
       });
 
       this.room.onMessage("move", (message) => {
