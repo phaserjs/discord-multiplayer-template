@@ -1,6 +1,4 @@
-import { InitXSprite } from "./InitXSprite";
 import Phaser from "phaser";
-import { XSprite } from "./XSprite";
 
 export class ScaleFlow {
   game: Phaser.Game;
@@ -10,7 +8,6 @@ export class ScaleFlow {
   guide: HTMLDivElement;
 
   static scaleManager: Phaser.Scale.ScaleManager;
-  static sprites: Set<XSprite>;
   static cameras: Set<Phaser.Cameras.Scene2D.Camera>;
 
   static gameZone: Phaser.Geom.Rectangle;
@@ -40,7 +37,6 @@ export class ScaleFlow {
     ScaleFlow.gameZone = new Phaser.Geom.Rectangle(0, 0, width, height);
     ScaleFlow.uiZone = new Phaser.Geom.Rectangle(0, 0, width, height);
 
-    ScaleFlow.sprites = new Set();
     ScaleFlow.cameras = new Set();
 
     config.callbacks = {
@@ -58,8 +54,6 @@ export class ScaleFlow {
     this.canvas = this.game.canvas;
     this.parent = this.canvas.parentElement as HTMLDivElement;
     this.guide = document.getElementById("guide") as HTMLDivElement;
-
-    InitXSprite();
 
     //  Force a resize event to set the initial size of the game. The time value doesn't matter,
     //  what matters is that the browser has done a full layout pass and the canvas size is now known.
@@ -106,8 +100,6 @@ export class ScaleFlow {
       camera.zoom = scaleFactor;
     });
 
-    ScaleFlow.sprites.forEach((sprite) => sprite.onResize());
-
     this.game.events.emit(ScaleFlow.RESIZE);
   }
 
@@ -119,14 +111,6 @@ export class ScaleFlow {
 
   static removeCamera(camera: Phaser.Cameras.Scene2D.Camera): void {
     this.cameras.delete(camera);
-  }
-
-  static addSprite(sprite: XSprite): void {
-    this.sprites.add(sprite);
-  }
-
-  static removeSprite(sprite: XSprite): void {
-    this.sprites.delete(sprite);
   }
 
   static getX(x: number | string): number {
