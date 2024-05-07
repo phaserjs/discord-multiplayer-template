@@ -1,15 +1,16 @@
 {
-  "name": "template-discord-colyseus-phaser",
+  "name": "discord-multiplayer-template",
   "private": true,
-  "version": "0.0.1",
-  "description": "A starter project using Phaser 3, Colyseus, and Discord SDK",
+  "version": "1.0.0",
+  "description": "A quickstart Phaser template for creating multiplayer Discord Activities",
   "main": "index.js",
   "scripts": {
     "dev": "pnpm run --filter \"./packages/**\" --parallel dev",
     "tunnel": "cloudflared tunnel --url http://localhost:3001"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Phaser Studio Inc <support@phaser.io> (https://www.phaser.io)",
+  "license": "MIT",
+  "licenseUrl": "https://www.opensource.org/licenses/mit-license.php",
   "devDependencies": {
     "@types/node": "^20.12.7"
   }
