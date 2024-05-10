@@ -12,6 +12,6 @@
   "license": "MIT",
   "licenseUrl": "https://www.opensource.org/licenses/mit-license.php",
   "devDependencies": {
-    "@types/node": "^20.12.7"
+    "@types/node": "^20.12.11"
   }
 }
