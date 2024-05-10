@@ -2,6 +2,10 @@
 
 This project template is designed to be used in conjunction with our [Creating Multiplayer Discord Games with Phaser](https://phaser.io/tutorials/creating-multiplayer-discord-games-with-phaser) tutorial. It provides a starting point for creating multiplayer games on Discord with Colyseus and Phaser, utilising their new Embedded App SDK.
 
+## Requirements
+
+You need to have Node.js v21 or higher version.
+
 ## Template Project Structure
 
 We have provided a default project structure to get you started. This is as follows:
