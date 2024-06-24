@@ -7,7 +7,7 @@
     "start": "npm-run-all build start:dev",
     "start:dev": "node ./dist/server.js",
     "start:prod": "NODE_ENV=production PORT=3000 node ./dist/server.js",
-    "dev": "nodemon --watch src -e ts,ejs --exec $npm_execpath start",
+    "dev": "node dev-command.js",
     "build": "npm-run-all build:clean build:tsc",
     "build:clean": "rimraf dist/*",
     "build:tsc": "tsc",
