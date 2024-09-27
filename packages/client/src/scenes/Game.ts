@@ -64,7 +64,7 @@ export class Game extends Scene {
     const url =
       location.host === "localhost:3000"
         ? `ws://localhost:3001`
-        : `wss://${location.host}:3001/api/colyseus`;
+        : `wss://${location.host}/api/colyseus`;
 
     const client = new Client(`${url}`);
 
