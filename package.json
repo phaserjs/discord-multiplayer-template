@@ -1,15 +1,16 @@
 {
   "name": "discord-multiplayer-template",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1",
   "description": "A quickstart Phaser template for creating multiplayer Discord Activities",
   "main": "index.js",
   "scripts": {
     "dev": "pnpm run --filter \"./packages/**\" --parallel dev",
-    "tunnel": "cloudflared tunnel --url http://localhost:3001"
+    "client-build": "cd \"./packages/client\" && npm run build",
+    "tunnel": "npm run client-build && cloudflared tunnel --url http://localhost:3001"
   },
-  "engines" : { 
-    "node" : ">=21.0.0 <22.0.0"
+  "engines": {
+    "node": ">=21.0.0 <22.0.0"
   },
   "author": "Phaser Studio Inc <support@phaser.io> (https://www.phaser.io)",
   "license": "MIT",
