@@ -6,6 +6,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm run --filter \"./packages/**\" --parallel dev",
+    "install": "npm run install:all",
+    "install:all": "npm run install-client && npm run install-server",
+    "install-client": "cd \"./packages/client\" && npm install",
+    "install-server": "cd \"./packages/server\" && npm install",
     "client-build": "cd \"./packages/client\" && npm run build",
     "tunnel": "npm run client-build && cloudflared tunnel --url http://localhost:3001"
   },
