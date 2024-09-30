@@ -2,6 +2,9 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
+
+  const isLocalhost = process.env.NODE_ENV === 'development';
+
   return defineConfig({
     envDir: "../../",
     build: {
@@ -16,11 +19,11 @@ export default ({ mode }) => {
     server: {
       port: 3000,
       proxy: {
-        "/.proxy/assets":{
-                target: "http://localhost:3000/assets",
-                changeOrigin: true,
-                ws: true,
-                rewrite: (path) => path.replace(/^\/.proxy\/assets/, ''),
+        "/.proxy/assets": {
+          target: "http://localhost:3000/assets",
+          changeOrigin: true,
+          ws: true,
+          rewrite: (path) => path.replace(/^\/.proxy\/assets/, ""),
         },
         "/.proxy/api": {
           target: "http://localhost:3001",
@@ -31,7 +34,7 @@ export default ({ mode }) => {
         }
       },
       hmr: {
-        clientPort: 3000,
+        clientPort: isLocalhost ? 3000 : 443, 
       },
     },
   });
