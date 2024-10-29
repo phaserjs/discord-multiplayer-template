@@ -14,12 +14,15 @@
     "tunnel": "npm run client-build && cloudflared tunnel --url http://localhost:3001"
   },
   "engines": {
-    "node": ">=21.0.0 <22.0.0"
+    "node": ">=21.0.0"
   },
   "author": "Phaser Studio Inc <support@phaser.io> (https://www.phaser.io)",
   "license": "MIT",
   "licenseUrl": "https://www.opensource.org/licenses/mit-license.php",
   "devDependencies": {
     "@types/node": "^20.12.11"
+  },
+  "dependencies": {
+    "cloudflared": "^0.5.3"
   }
 }
