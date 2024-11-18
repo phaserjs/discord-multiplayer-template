@@ -50,8 +50,6 @@ router.post("/api/token", async (req: Request, res: Response) => {
     grant_type: "authorization_code",
     code: req.body.code,
   });
-  // console log the b object to see what it looks like
-  console.log("b", b);
 
   const response = await fetch(`https://discord.com/api/oauth2/token`, {
     method: "POST",
@@ -65,7 +63,7 @@ router.post("/api/token", async (req: Request, res: Response) => {
       code: req.body.code,
     }),
   });
-  
+
   const { access_token } = (await response.json()) as {
     access_token: string;
   };

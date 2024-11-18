@@ -1,5 +1,5 @@
 import { CommandResponse, DiscordSDK, DiscordSDKMock } from "@discord/embedded-app-sdk";
-type Auth = CommandResponse<'authenticate'>;
+type Auth = CommandResponse<"authenticate">;
 let auth: Auth;
 
 const queryParams = new URLSearchParams(window.location.search);
@@ -9,40 +9,9 @@ let discordSdk: DiscordSDK | DiscordSDKMock;
 
 const initiateDiscordSDK = async () => {
   if (isEmbedded) {
-    console.log('isEmbedded');
     discordSdk = new DiscordSDK(import.meta.env.VITE_CLIENT_ID);
-
     await discordSdk.ready();
     console.log("discordSdk ready");
-
-    // Pop open the OAuth permission modal and request for access to scopes listed in scope array below
-    const {code} = await discordSdk.commands.authorize({
-      client_id: import.meta.env.VITE_CLIENT_ID,
-      response_type: 'code',
-      state: '',
-      prompt: 'none',
-      scope: ['identify', 'applications.commands'],
-    });
-    console.log('code', code);
-    
-
-    // Retrieve an access_token from your application's server 
-    const response = await fetch('/.proxy/api/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        code,
-      }),
-    });
-    const {access_token} = await response.json();
-
-    // Authenticate with Discord client (using the access_token)
-    auth = await discordSdk.commands.authenticate({
-      access_token,
-    });
-    console.log("Authenticated with Discord!");
   } else {
     // We're using session storage for user_id, guild_id, and channel_id
     // This way the user/guild/channel will be maintained until the tab is closed, even if you refresh
@@ -54,11 +23,7 @@ const initiateDiscordSDK = async () => {
     const mockGuildId = getOverrideOrRandomSessionValue("guild_id");
     const mockChannelId = getOverrideOrRandomSessionValue("channel_id");
 
-    discordSdk = new DiscordSDKMock(
-      import.meta.env.VITE_CLIENT_ID,
-      mockGuildId,
-      mockChannelId
-    );
+    discordSdk = new DiscordSDKMock(import.meta.env.VITE_CLIENT_ID, mockGuildId, mockChannelId);
     const discriminator = String(mockUserId.charCodeAt(0) % 5);
 
     discordSdk._updateCommandMocks({
@@ -86,15 +51,45 @@ const initiateDiscordSDK = async () => {
   }
 };
 
+// Pop open the OAuth permission modal and request for access to scopes listed in scope array below
+const authorizeDiscordUser = async () => {
+  const { code } = await discordSdk.commands.authorize({
+    client_id: import.meta.env.VITE_CLIENT_ID,
+    response_type: "code",
+    state: "",
+    prompt: "none",
+    scope: ["identify", "applications.commands"],
+  });
+
+  // Retrieve an access_token from your application's server
+  const response = await fetch("/.proxy/api/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      code,
+    }),
+  });
+  const { access_token } = await response.json();
+
+  // Authenticate with Discord client (using the access_token)
+  auth = await discordSdk.commands.authenticate({
+    access_token,
+  });
+};
+
+const getUserName = () => {
+  return auth.user.username;
+};
+
 enum SessionStorageQueryParam {
   user_id = "user_id",
   guild_id = "guild_id",
   channel_id = "channel_id",
 }
 
-function getOverrideOrRandomSessionValue(
-  queryParam: `${SessionStorageQueryParam}`
-) {
+function getOverrideOrRandomSessionValue(queryParam: `${SessionStorageQueryParam}`) {
   const overrideValue = queryParams.get(queryParam);
   if (overrideValue != null) {
     return overrideValue;
@@ -111,4 +106,4 @@ function getOverrideOrRandomSessionValue(
   return randomString;
 }
 
-export { discordSdk, initiateDiscordSDK };
+export { discordSdk, initiateDiscordSDK, authorizeDiscordUser, getUserName };
