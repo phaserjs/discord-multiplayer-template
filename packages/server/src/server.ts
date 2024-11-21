@@ -38,10 +38,6 @@ if (process.env.NODE_ENV === "production") {
 // If you don't want people accessing your server stats, comment this line.
 router.use("/colyseus", monitor(server as Partial<MonitorOptions>));
 
-router.get("/api/hi", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
-
 // Fetch token from developer portal and return to the embedded app
 router.post("/api/token", async (req: Request, res: Response) => {
   let b = new URLSearchParams({
@@ -67,7 +63,6 @@ router.post("/api/token", async (req: Request, res: Response) => {
   const { access_token } = (await response.json()) as {
     access_token: string;
   };
-  console.log("access_token", access_token);
 
   res.send({ access_token });
 });

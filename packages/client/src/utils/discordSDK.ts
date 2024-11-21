@@ -11,7 +11,6 @@ const initiateDiscordSDK = async () => {
   if (isEmbedded) {
     discordSdk = new DiscordSDK(import.meta.env.VITE_CLIENT_ID);
     await discordSdk.ready();
-    console.log("discordSdk ready");
   } else {
     // We're using session storage for user_id, guild_id, and channel_id
     // This way the user/guild/channel will be maintained until the tab is closed, even if you refresh

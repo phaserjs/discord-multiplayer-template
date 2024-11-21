@@ -54,10 +54,12 @@ export class Game extends Scene {
       });
     });
 
-    this.add.text(this.cameras.main.width * 0.4, this.cameras.main.height * 0.95, `Connected as: ${getUserName()}`, {
-      font: "14px Arial",
-      color: "#000000",
-    });
+    this.add
+      .text(this.cameras.main.width * 0.5, this.cameras.main.height * 0.95, `Connected as: ${getUserName()}`, {
+        font: "14px Arial",
+        color: "#000000",
+      })
+      .setOrigin(0.5);
   }
 
   async connect() {

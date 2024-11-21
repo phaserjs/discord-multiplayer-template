@@ -28,7 +28,6 @@ export class MainMenu extends Scene {
 
     this.input.once("pointerdown", async () => {
       await authorizeDiscordUser();
-      console.log("Authenticated with Discord! starting game");
       this.scene.start("Game");
     });
   }
