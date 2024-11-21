@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { Room, Client } from "colyseus.js";
+import { getUserName } from "../utils/discordSDK";
 
 export class Game extends Scene {
   room: Room;
@@ -11,19 +12,13 @@ export class Game extends Scene {
   async create() {
     this.scene.launch("background");
 
-    const grid = this.add.image(
-      this.cameras.main.width * 0.5,
-      this.cameras.main.height * 0.4,
-      "grid"
-    );
+    const grid = this.add.image(this.cameras.main.width * 0.5, this.cameras.main.height * 0.4, "grid");
     grid.setScale(0.6);
 
     await this.connect();
 
     this.room.state.draggables.onAdd((draggable: any, draggableId: string) => {
-      const image = this.add
-        .image(draggable.x, draggable.y, draggableId)
-        .setInteractive();
+      const image = this.add.image(draggable.x, draggable.y, draggableId).setInteractive();
       image.name = draggableId;
       image.setScale(0.8);
 
@@ -58,13 +53,18 @@ export class Game extends Scene {
         image.y = draggable.y;
       });
     });
+
+    this.add
+      .text(this.cameras.main.width * 0.5, this.cameras.main.height * 0.95, `Connected as: ${getUserName()}`, {
+        font: "14px Arial",
+        color: "#000000",
+      })
+      .setOrigin(0.5);
   }
 
   async connect() {
     const url =
-      location.host === "localhost:3000"
-        ? `ws://localhost:3001`
-        : `wss://${location.host}/.proxy/api/colyseus`;
+      location.host === "localhost:3000" ? `ws://localhost:3001` : `wss://${location.host}/.proxy/api/colyseus`;
 
     const client = new Client(`${url}`);
 
