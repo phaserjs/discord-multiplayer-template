@@ -28,6 +28,7 @@ server
   .filterBy(["channelId"]);
 
 app.use(express.json());
+app.use(router);
 
 if (process.env.NODE_ENV === "production") {
   const clientBuildPath = path.join(__dirname, "../../client/dist");
@@ -38,7 +39,14 @@ if (process.env.NODE_ENV === "production") {
 router.use("/colyseus", monitor(server as Partial<MonitorOptions>));
 
 // Fetch token from developer portal and return to the embedded app
-router.post("/token", async (req: Request, res: Response) => {
+router.post("/api/token", async (req: Request, res: Response) => {
+  let b = new URLSearchParams({
+    client_id: process.env.VITE_CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
+    grant_type: "authorization_code",
+    code: req.body.code,
+  });
+
   const response = await fetch(`https://discord.com/api/oauth2/token`, {
     method: "POST",
     headers: {

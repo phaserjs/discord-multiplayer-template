@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { authorizeDiscordUser } from "../utils/discordSDK";
 
 export class MainMenu extends Scene {
   constructor() {
@@ -6,11 +7,7 @@ export class MainMenu extends Scene {
   }
 
   create() {
-    const bg = this.add.image(
-      this.cameras.main.width / 2,
-      this.cameras.main.height / 2,
-      "background"
-    );
+    const bg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, "background");
     let scaleX = this.cameras.main.width / bg.width + 0.2;
     let scaleY = this.cameras.main.height / bg.height + 0.2;
     let scale = Math.max(scaleX, scaleY);
@@ -29,7 +26,8 @@ export class MainMenu extends Scene {
       })
       .setOrigin(0.5);
 
-    this.input.once("pointerdown", () => {
+    this.input.once("pointerdown", async () => {
+      await authorizeDiscordUser();
       this.scene.start("Game");
     });
   }
