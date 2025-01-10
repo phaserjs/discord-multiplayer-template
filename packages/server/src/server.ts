@@ -68,7 +68,7 @@ router.post("/api/token", async (req: Request, res: Response) => {
 });
 
 // Using a flat route in dev to match the vite server proxy config
-app.use(process.env.NODE_ENV === "production" ? "/api" : "/", router);
+app.use(process.env.NODE_ENV === "production" ? "/.proxy/api" : "/", router);
 
 server.listen(port).then(() => {
   console.log(`App is listening on port ${port} !`);
