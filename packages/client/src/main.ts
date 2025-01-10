@@ -1,5 +1,5 @@
 import { ScaleFlow } from "./utils/ScaleFlow";
-import { initiateDiscordSDK, discordSdk } from "./utils/discordSDK";
+import { initiateDiscordSDK } from "./utils/discordSDK";
 
 import { Boot } from "./scenes/Boot";
 import { Game } from "./scenes/Game";
