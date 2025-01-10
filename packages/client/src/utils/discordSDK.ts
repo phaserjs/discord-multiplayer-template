@@ -52,6 +52,10 @@ const initiateDiscordSDK = async () => {
 
 // Pop open the OAuth permission modal and request for access to scopes listed in scope array below
 const authorizeDiscordUser = async () => {
+  if (!isEmbedded) {
+    return;
+  }
+
   const { code } = await discordSdk.commands.authorize({
     client_id: import.meta.env.VITE_CLIENT_ID,
     response_type: "code",
@@ -79,6 +83,10 @@ const authorizeDiscordUser = async () => {
 };
 
 const getUserName = () => {
+  if (!auth) {
+    return "User";
+  }
+
   return auth.user.username;
 };
 
