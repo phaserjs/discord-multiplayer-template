@@ -2,11 +2,10 @@ import { Client, Room } from "colyseus";
 import { GameState, Draggables } from "../schemas/GameState";
 
 export class GameRoom extends Room<GameState> {
+  state = new GameState();
   maxClients = 25; // Current Discord limit is 25
 
   onCreate(options: any): void | Promise<any> {
-    this.setState(new GameState());
-
     const draggableList = [
       "smile",
       "alien",

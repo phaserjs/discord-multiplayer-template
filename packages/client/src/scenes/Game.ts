@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { Room, Client } from "colyseus.js";
+import { Room, Client, getStateCallbacks } from "colyseus.js";
 import { getUserName } from "../utils/discordSDK";
 
 export class Game extends Scene {
@@ -17,7 +17,9 @@ export class Game extends Scene {
 
     await this.connect();
 
-    this.room.state.draggables.onAdd((draggable: any, draggableId: string) => {
+    const $ = getStateCallbacks(this.room);
+
+    $(this.room.state).draggables.onAdd((draggable: any, draggableId: string) => {
       const image = this.add.image(draggable.x, draggable.y, draggableId).setInteractive();
       image.name = draggableId;
       image.setScale(0.8);
@@ -48,7 +50,7 @@ export class Game extends Scene {
         });
       });
 
-      draggable.onChange(() => {
+      $(draggable).onChange(() => {
         image.x = draggable.x;
         image.y = draggable.y;
       });

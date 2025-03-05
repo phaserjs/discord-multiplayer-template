@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@discord/embedded-app-sdk": "^1.4.3",
-    "colyseus.js": "^0.15.18",
+    "colyseus.js": "^0.16.0",
     "phaser": "^3.87.0"
   }
 }
