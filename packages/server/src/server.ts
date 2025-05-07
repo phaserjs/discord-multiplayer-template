@@ -41,8 +41,8 @@ router.use("/colyseus", monitor(server as Partial<MonitorOptions>));
 // Fetch token from developer portal and return to the embedded app
 router.post("/api/token", async (req: Request, res: Response) => {
   let b = new URLSearchParams({
-    client_id: process.env.VITE_CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
+    client_id: process.env.VITE_DISCORD_CLIENT_ID,
+    client_secret: process.env.DISCORD_CLIENT_SECRET,
     grant_type: "authorization_code",
     code: req.body.code,
   });
@@ -53,8 +53,8 @@ router.post("/api/token", async (req: Request, res: Response) => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({
-      client_id: process.env.VITE_CLIENT_ID,
-      client_secret: process.env.CLIENT_SECRET,
+      client_id: process.env.VITE_DISCORD_CLIENT_ID,
+      client_secret: process.env.DISCORD_CLIENT_SECRET,
       grant_type: "authorization_code",
       code: req.body.code,
     }),
